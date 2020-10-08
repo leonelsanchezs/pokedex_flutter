@@ -16,7 +16,7 @@ class DetailPage extends StatelessWidget {
         title: Text('${pokemon.name.toUpperCase()}'),
       ),
       body: FutureBuilder(
-        future: pokemonService.getPokemonDetail(pokemon.url),
+        future: pokemonService.getPokemonDetail(pokemon.extractID()),
         builder: (BuildContext context, AsyncSnapshot<PokemonDetail> snapshot) {
           if (!snapshot.hasData)
             return Center(child: CircularProgressIndicator());
@@ -64,7 +64,21 @@ class DetailPage extends StatelessWidget {
                     style: this.styleLabels,
                   ),
                 ],
-              )
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                'Locations: ${pokemon.locationAreaEncounters}',
+                style: this.styleLabels,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                'Experience: ${pokemon.baseExperience}',
+                style: this.styleLabels,
+              ),
             ],
           ),
         ),

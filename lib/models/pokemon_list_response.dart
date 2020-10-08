@@ -25,4 +25,16 @@ class PokemonListResponse {
         "name": name,
         "url": url,
       };
+
+  String extractID() {
+    if (this.url == null) return '';
+
+    String url = this.url;
+    String last = url.substring(url.length - 1, url.length);
+    if (last == '/') {
+      url = url.substring(0, url.length - 1);
+    }
+    var splitted = url.split('/');
+    return (splitted.last);
+  }
 }

@@ -43,17 +43,19 @@ class _HomePageState extends State<HomePage> {
         return Scaffold(
           appBar: AppBar(
             title: Text('POKEDEX!'),
-            leading: IconButton(
-              icon: Icon(
-                Icons.exit_to_app,
-                color: Colors.black54,
+            actions: [
+              IconButton(
+                icon: Icon(
+                  Icons.exit_to_app,
+                  color: Colors.white,
+                ),
+                onPressed: () async {
+                  final _storage = FlutterSecureStorage();
+                  await _storage.deleteAll();
+                  Navigator.pushReplacementNamed(context, 'login');
+                },
               ),
-              onPressed: () async {
-                final _storage = FlutterSecureStorage();
-                await _storage.deleteAll();
-                Navigator.pushReplacementNamed(context, 'login');
-              },
-            ),
+            ],
           ),
           body: Center(
             child: _listViewPokemon(state.pokemonList),
