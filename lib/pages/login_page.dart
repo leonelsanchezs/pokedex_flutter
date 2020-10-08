@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pokedex_flutter/widgets/custom_input.dart';
 import 'package:pokedex_flutter/widgets/custom_raised_btn.dart';
 
@@ -13,11 +14,7 @@ class LoginPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FadeInImage(
-                placeholder: AssetImage('assets/img/loading.gif'),
-                image: NetworkImage(
-                    'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/62902855-31e8-48de-986e-5080e8ef5f15/d5uxsvu-cbf56dfe-0c82-40f9-928b-1e756acf0236.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvNjI5MDI4NTUtMzFlOC00OGRlLTk4NmUtNTA4MGU4ZWY1ZjE1XC9kNXV4c3Z1LWNiZjU2ZGZlLTBjODItNDBmOS05MjhiLTFlNzU2YWNmMDIzNi5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.2zLsxmr6hCqcUNfeDQCmgJ4MXZ6OA-oU_kWdoX6C4-A'),
-              ),
+              Image.asset('assets/img/logo.png'),
               _Form(),
             ],
           ),
@@ -58,12 +55,35 @@ class __FormState extends State<_Form> {
           CustomRaisedButton(
             backColor: Colors.red,
             title: 'Login',
-            callback: () {
+            callback: () async {
+              if (emailCtrl.text.isEmpty || passCtrl.text.isEmpty)
+                return muestraAlerta();
+
+              FocusScope.of(context).unfocus();
+              final _storage = FlutterSecureStorage();
+              await _storage.write(key: 'loginok', value: 'true');
               Navigator.pushReplacementNamed(context, 'home');
             },
           ),
         ],
       ),
     );
+  }
+
+  void muestraAlerta() {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              title: Text('ERROR'),
+              content: Text('You must type a valid email and password'),
+              actions: [
+                MaterialButton(
+                  child: Text('Ok'),
+                  elevation: 5,
+                  textColor: Colors.redAccent,
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            ));
   }
 }
